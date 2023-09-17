@@ -1,14 +1,23 @@
+/**
+ * using calls to BFCalculator the inputs from the user will be evaluated
+ * 
+ * @author Alma Ordaz
+ */
+
 import java.io.PrintWriter;
 
 public class QuickCalculator {
   public static void main(String[] args){
     PrintWriter pen = new PrintWriter(System.out, true);
-    BigFraction f1 = new BigFraction(2, 3);
-    BigFraction f2 = new BigFraction(2, 5);
+    BFCalculator calculator = new BFCalculator();
 
-    pen.println(f1.add(f2));
+    for(int i = 0; i < args.length; i++){
 
+      BigFraction result = calculator.evaluate(args[i]);
 
+      if(!(args[i].contains("STORE"))){
+        pen.println(args[i] + " = " + result);
+      }//if
+    }//for
   }//main
-  
-}
+}//class QuickCalculator

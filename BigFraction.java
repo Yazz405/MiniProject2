@@ -52,15 +52,24 @@ public class BigFraction {
   } // Fraction(int, int)
 
   /**
-   * Build a new fraction by parsing a string.
+   * Build a new fraction by parsing a string, the string is either in the form "x/y" or just "x".
    */
   public BigFraction(String str) {
-    int index = str.indexOf("/");
-    String n = str.substring(0, index);
-    String d = str.substring((index + 1), str.length());
 
-    this.num = BigInteger.valueOf(java.lang.Integer.parseInt(n));
-    this.denom = BigInteger.valueOf(java.lang.Integer.parseInt(d));
+    if(!(str.contains("/"))){
+      this.num = BigInteger.valueOf(java.lang.Integer.parseInt(str));
+      this.denom = BigInteger.valueOf(1);
+
+    }//if
+    else{
+      int index = str.indexOf("/");
+      String num = str.substring(0, index);
+      String denom = str.substring((index + 1), str.length());
+  
+      this.num = BigInteger.valueOf(java.lang.Integer.parseInt(num));
+      this.denom = BigInteger.valueOf(java.lang.Integer.parseInt(denom));
+    }//else
+
   } // Fraction
 
   // +---------+------------------------------------------------------
@@ -74,7 +83,9 @@ public class BigFraction {
     return this.num.doubleValue() / this.denom.doubleValue();
   } // doubleValue()
 
-
+  /*
+   * Reduce the fraction
+   */
   public BigFraction reduce(){
     BigInteger gcf = BigInteger.valueOf(0);
 
@@ -95,28 +106,28 @@ public class BigFraction {
     BigInteger resultNumerator;
     BigInteger resultDenominator;
 
-    // The denominator of the result is the
-    // product of this object's denominator
-    // and addMe's denominator
     resultDenominator = this.denom.multiply(addMe.denom);
-    // The numerator is more complicated
     resultNumerator = (this.num.multiply(addMe.denom)).add(addMe.num.multiply(this.denom));
 
-    // Return the computed value
     return new BigFraction(resultNumerator, resultDenominator);
   }// add(BigFraction)
 
-public BigFraction subtract(BigFraction dif) {
+  /*
+   * subtract dif from this fraction
+   */
+  public BigFraction subtract(BigFraction dif) {
     BigInteger resultNumerator;
     BigInteger resultDenominator;
 
     resultDenominator = this.denom.multiply(dif.denom);
     resultNumerator = (dif.num.multiply(this.denom)).subtract(this.num.multiply(dif.denom));
 
-    // Return the computed value
     return new BigFraction(resultNumerator, resultDenominator);
   }// subtract(BigFraction)
 
+  /*
+   * divide this fraction by div
+   */
   public BigFraction divide(BigFraction div){
     BigInteger resultNumerator;
     BigInteger resultDenominator;
@@ -157,8 +168,9 @@ public BigFraction subtract(BigFraction dif) {
     return this.num + "/" + this.denom;
   } // toString()
 
-
-
+  /*
+   * multiply this fraction and other
+   */
   public BigFraction multiply (BigFraction other){
     BigInteger resultDenominator;
     BigInteger resultNominator;
@@ -170,6 +182,9 @@ public BigFraction subtract(BigFraction dif) {
 
   }
 
+  /*
+   * returns the fractional of this fraction
+   */
   public BigFraction fractional (){
 
     BigInteger resultNumerator;
