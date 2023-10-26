@@ -18,12 +18,16 @@ public class InteractiveCalculator {
 
     while(true){
       exp = input.nextLine();
-      pen.println(calculator.evaluate(exp));
+
+      calculator.evaluate(exp);
+      pen.println(calculator.getRunningTotal());
 
       if(exp.equals("QUIT")){
         break;
       }//if
 
     }//while
+
+    input.close();
   }//main
 }//class InteractiveCalculator

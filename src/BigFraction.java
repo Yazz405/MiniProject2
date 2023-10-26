@@ -1,8 +1,3 @@
-import java.math.BigInteger;
-import java.lang.String;
-
-public class BigFraction {
-
 /**
  * A simple implementation of Fractions.
  * 
@@ -20,6 +15,11 @@ public class BigFraction {
    * (2) Fractions are not necessarily stored in simplified form. To obtain a fraction 
    * in simplified form, one must call the `simplify` method.
    */
+
+import java.math.BigInteger;
+import java.lang.String;
+
+public class BigFraction {
 
   // +--------+-------------------------------------------------------
   // | Fields |

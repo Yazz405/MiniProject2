@@ -13,7 +13,8 @@ public class QuickCalculator {
 
     for(int i = 0; i < args.length; i++){
 
-      BigFraction result = calculator.evaluate(args[i]);
+      calculator.evaluate(args[i]);
+      BigFraction result = calculator.getRunningTotal();
 
       if(!(args[i].contains("STORE"))){
         pen.println(args[i] + " = " + result);
