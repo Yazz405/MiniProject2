@@ -20,8 +20,6 @@ public class BFCalculator {
   public void store(char register) {
 
     this.registers[(int) register - (int) 'a'] = this.runningTotal;
-    System.out.println("index: " + ((int) register - (int) 'a'));
-
   }// store(char)
 
   /*
@@ -57,22 +55,34 @@ public class BFCalculator {
    */
   public void evaluateHelp(String exp) {
 
+    //variable declarations
     String[] apart = separate(exp);
     BigFraction first = new BigFraction(apart[0]);
-    BigFraction second = new BigFraction(apart[2]);
+    BigFraction second;
+    BigFraction total = new BigFraction("1");
 
-    if (apart[1].equals("+")) {
-      this.runningTotal = first.add(second).reduce();
-    } // if
-    else if (apart[1].equals("/")) {
-      this.runningTotal = first.divide(second).reduce();
-    } // else if
-    else if (apart[1].equals("-")) {
-      this.runningTotal = first.subtract(second).reduce();
-    } // elseif
-    else if (apart[1].equals("*")) {
-      this.runningTotal = first.multiply(second).reduce();
-    } // elseif
+    for (int i = 1; apart[i] != null; i += 2) {
+
+      second = new BigFraction(apart[i + 1]);
+
+      if (apart[i].equals("+")) {
+        total = first.add(second).reduce();
+      } // if
+      else if (apart[i].equals("/")) {
+        total = first.divide(second).reduce();
+      } // else if
+      else if (apart[i].equals("-")) {
+        total = first.subtract(second).reduce();
+      } // elseif
+      else if (apart[i].equals("*")) {
+        total = first.multiply(second).reduce();
+      } // elseif
+
+      first = total;
+    } // for
+
+    this.runningTotal = total;
+
   }// evaluateHelper(String)
 
   /*
@@ -82,71 +92,52 @@ public class BFCalculator {
    */
   public void evaluate(String exp) {
 
-    // variable declarations
-    String first;
-    String second;
     String newExp;
-    int left = 0;
-    int right = 2;
-    int operator = 1;
 
     // seperated the string by spaces into String[]
+    // separate the expression by its idividual components
     String[] apart = separate(exp);
-
-    // error case
-    if (apart[1].equals(null)) {
-      System.err.println("Please input a full axpression with +, -, / , *, or STORE seperated by spaces");
-    } // if
 
     // storing a value
     if (apart[0].equals("STORE")) {
       store(apart[1].charAt(0));
     } // if
-    else if ((apart[left].matches("[a-z]")) && (apart[right].matches("[a-z]"))) {
-      // if you are adding to chars with stored values
-
-      first = this.registers[(int) apart[left].charAt(0) - (int) 'a'].toString();
-      second = this.registers[apart[right].charAt(0) - (int) 'a'].toString();
-
-      newExp = first.concat(" ");
-      newExp = newExp.concat(apart[operator]);
-      newExp = newExp.concat(" ");
-      newExp = newExp.concat(second);
-
-      evaluateHelp(newExp);
-    } // else if
-    else if ((apart[left].matches("[a-z]"))) {
-      // if there is a char with a stored value on the left of the arithmetic sign
-
-      first = registers[(int) apart[left].charAt(0) - (int) 'a'].toString();
-
-      newExp = first.concat(" ");
-      newExp = newExp.concat(apart[operator]);
-      newExp = newExp.concat(" ");
-      newExp = newExp.concat(apart[right]);
-
-      evaluateHelp(newExp);
-    } // else if
-    else if ((apart[right].matches("[a-z]"))) {
-      // if there is a char with a stored value on the right of the arithmetic sign
-      second = registers[(int) apart[right].charAt(0) - (int) 'a'].toString();
-
-      newExp = apart[left].concat(" ");
-      newExp = newExp.concat(apart[operator]);
-      newExp = newExp.concat(" ");
-      newExp = newExp.concat(second);
-
-      evaluateHelp(newExp);
-    } // else if
+    else if(apart.length == 1){
+      this.runningTotal = new BigFraction(apart[0]);
+    }//else if
     else {
-      evaluateHelp(exp);
-    } // else
+      for(int i = 0; apart[i] != null; ++i){
+        if(apart[i].matches("[a-z]")){
+          apart[i] = registers[(int) apart[i].charAt(0) - (int) 'a'].toString();
+        }//if
+      }//for
 
-  }//evaluate(String)
+      newExp = apart[0];
+      for(int i = 1; apart[i] != null; i++){
 
-  //gets the runningTotal
-  public BigFraction getRunningTotal(){
+        newExp = newExp.concat(" ");
+        newExp = newExp.concat(apart[i]);
+      }//for
+      evaluateHelp(newExp);
+    }//else
+
+  }// evaluate(String)
+
+  /*
+   * gets the runningTotal
+   */ 
+  public BigFraction getRunningTotal() {
     return this.runningTotal;
-  }//getRunningTotal()
+  }// getRunningTotal()
+
+  /*
+   * returns is the string represents an operation
+   */
+  public boolean isOperation(String operator){
+
+    return operator.equals("+") || operator.equals("-") || 
+           operator.equals("/") || operator.equals("*");
+
+  }//isOperation(String)
 
 }// class BFCalculator

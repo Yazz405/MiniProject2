@@ -17,7 +17,12 @@ public class QuickCalculator {
       BigFraction result = calculator.getRunningTotal();
 
       if(!(args[i].contains("STORE"))){
-        pen.println(args[i] + " = " + result);
+        if (result.denominator().intValue() == 1){
+          pen.println(args[i] + " = " + result.numerator());
+        }//if
+        else {
+          pen.println(args[i] + " = " + result);
+        }//else
       }//if
     }//for
   }//main
