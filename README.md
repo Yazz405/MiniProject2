@@ -8,3 +8,8 @@ Acknowledgements: Sam R.
 
 Redo Changes:
     - fixed store by taking all the if statements out of a for loop.
+    - whole numbers are appear as such
+    - handles expressions with no operators
+    - handles expressions with multiple operations
+    - Provides an appropriate error message if the expression has the
+      wrong form
